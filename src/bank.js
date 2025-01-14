@@ -42,6 +42,34 @@ var Bank = /** @class */ (function () {
         this.accounts.set(accountNumber, account);
         return account;
     };
+    /**
+     * Deposits a specified amount into a user's bank account.
+     *
+     * @param userId - The unique identifier of the user attempting the deposit.
+     * @param accountNumber - The account number into which the deposit is made.
+     * @param amount - The amount of money to deposit. Must be greater than 0.
+     *
+     * @throws Error if the amount is non-positive.
+     * @throws Error if the user does not have an account.
+     * @throws Error if the account number is invalid.
+     * @throws Error if the account does not belong to the specified user.
+     */
+    Bank.prototype.deposit = function (userId, accountNumber, amount) {
+        if (amount <= 0) {
+            throw new Error("You cannot deposit non-positive amount.");
+        }
+        if (!this.isUserIdExists(userId)) {
+            throw new Error("You do not have an account. Please create one first.");
+        }
+        if (!this.accounts.has(accountNumber)) {
+            throw new Error("Invalid account number.");
+        }
+        var account = this.accounts.get(accountNumber);
+        if ((account === null || account === void 0 ? void 0 : account.userId) != userId) {
+            throw new Error("This account does not belong to you. You can only deposit into your own account.");
+        }
+        account.balance += amount;
+    };
     return Bank;
 }());
 exports.Bank = Bank;
