@@ -102,6 +102,30 @@ var Bank = /** @class */ (function () {
         }
         account.balance -= amount;
     };
+    /**
+     * Check the balance of a user's bank account.
+     *
+     * @param userId - The unique identifier of the user attempting the deposit.
+     * @param accountNumber - The account number into which the deposit is made.
+     *
+     * @throws Error if the user does not have an account.
+     * @throws Error if the account number is invalid.
+     * @throws Error if the account does not belong to the specified user.
+     * @returns the account balance.
+     */
+    Bank.prototype.checkBalance = function (userId, accountNumber) {
+        if (!this.isUserIdExists(userId)) {
+            throw new Error("You do not have an account. Please create one first.");
+        }
+        if (!this.accounts.has(accountNumber)) {
+            throw new Error("Invalid account number.");
+        }
+        var account = this.accounts.get(accountNumber);
+        if ((account === null || account === void 0 ? void 0 : account.userId) != userId) {
+            throw new Error("This account does not belong to you. You can only check balance for your own account.");
+        }
+        return account.balance;
+    };
     return Bank;
 }());
 exports.Bank = Bank;

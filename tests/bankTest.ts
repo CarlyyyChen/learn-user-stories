@@ -64,7 +64,7 @@ function testDeposit() {
   try {
     bank.deposit(102, account.accountNumber, 100);
     throw new Error(
-      "You should not be able deposit if you do not have an account"
+      "You should not be able to deposit if you do not have an account"
     );
   } catch (error) {
     assert.equal(
@@ -78,7 +78,7 @@ function testDeposit() {
   try {
     bank.deposit(userId, -123, 100);
     throw new Error(
-      "You should not be able deposit if the account number does not exist"
+      "You should not be able to deposit if the account number does not exist"
     );
   } catch (error) {
     assert.equal(
@@ -93,7 +93,7 @@ function testDeposit() {
   const account2 = bank.createAccount(200, "David");
   try {
     bank.deposit(userId, account2.accountNumber, 100);
-    throw new Error("You should not be able deposit to other's account");
+    throw new Error("You should not be able to deposit to other's account");
   } catch (error) {
     assert.equal(
       error.message,
@@ -137,7 +137,7 @@ function testWithdraw() {
   try {
     bank.withdraw(102, account.accountNumber, 100);
     throw new Error(
-      "You should not be able withdraw if you do not have an account"
+      "You should not be able to withdraw if you do not have an account"
     );
   } catch (error) {
     assert.equal(
@@ -151,7 +151,7 @@ function testWithdraw() {
   try {
     bank.withdraw(userId, -123, 100);
     throw new Error(
-      "You should not be able withdraw if the account number does not exist"
+      "You should not be able to withdraw if the account number does not exist"
     );
   } catch (error) {
     assert.equal(
@@ -166,7 +166,7 @@ function testWithdraw() {
   const account2 = bank.createAccount(200, "David");
   try {
     bank.withdraw(userId, account2.accountNumber, 100);
-    throw new Error("You should not be able withdraw from other's account");
+    throw new Error("You should not be able to withdraw from other's account");
   } catch (error) {
     assert.equal(
       error.message,
@@ -179,7 +179,7 @@ function testWithdraw() {
   // withdraw more than the balance
   try {
     bank.withdraw(userId, account.accountNumber, 200);
-    throw new Error("You should not be able withdraw more than the balance");
+    throw new Error("You should not be able to withdraw more than the balance");
   } catch (error) {
     assert.equal(
       error.message,
@@ -192,6 +192,83 @@ function testWithdraw() {
   console.log("Successfully passed withdraw test");
 }
 
+// test for check balance
+function testCheckBalance() {
+  const bank = new Bank();
+
+  const userId = 101;
+  const name = "Alice";
+  const account = bank.createAccount(userId, name);
+
+  // successfully check amount
+  assert.equal(
+    0,
+    bank.checkBalance(userId, account.accountNumber),
+    "Balance should match"
+  );
+
+  bank.deposit(userId, account.accountNumber, 100);
+  assert.equal(
+    100,
+    bank.checkBalance(userId, account.accountNumber),
+    "Balance should match"
+  );
+
+  bank.withdraw(userId, account.accountNumber, 50);
+  assert.equal(
+    50,
+    bank.checkBalance(userId, account.accountNumber),
+    "Balance should match"
+  );
+
+  // user does not have an account
+  try {
+    bank.checkBalance(102, account.accountNumber);
+    throw new Error(
+      "You should not be able to check balance if you do not have an account"
+    );
+  } catch (error) {
+    assert.equal(
+      error.message,
+      "You do not have an account. Please create one first.",
+      "Error message should indicate the user does not have an account."
+    );
+  }
+
+  // the account number does not exist
+  try {
+    bank.checkBalance(userId, -123);
+    throw new Error(
+      "You should not be able to check account balance if the account number does not exist"
+    );
+  } catch (error) {
+    assert.equal(
+      error.message,
+      "Invalid account number.",
+      "Error message should indicate invalid account number."
+    );
+  }
+
+  // check the balance of another account that is not held by the user
+  const account2 = bank.createAccount(200, "David");
+  try {
+    bank.checkBalance(userId, account2.accountNumber);
+    throw new Error(
+      "You should not be able to check balance for other's account"
+    );
+  } catch (error) {
+    assert.equal(
+      error.message,
+      "This account does not belong to you. You can only check balance for your own account.",
+      "Error message should indicate user does not have this account."
+    );
+  }
+
+  console.log("Successfully passed check balance test");
+}
+
 testAccountCreation();
 testDeposit();
 testWithdraw();
+testCheckBalance();
+console.log("All tests passed.");
