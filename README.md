@@ -1,3 +1,2 @@
 # learn-user-stories
-* The source codes are in src folder. The interface for a bank account and the bank class are implemented in bank.ts
-* The tests are in tests folder. The tests are implemented in bankTest.ts. To run the test, `cd tests` then run `node bankTest.js`.
+* Because I have implemented the user stories before class, and then since there are new requirements raised in class (like constraint for age), I have to re-implement the user stories, that's why you can see the user stories being moved from 'completed' to 'open' and then to 'completed' again.
