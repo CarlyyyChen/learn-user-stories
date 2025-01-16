@@ -36,6 +36,11 @@ export class Bank implements BankType {
     return accountNumber.toString().length !== 10;
   }
 
+  /**
+   * check if username exists
+   * @param username - username
+   * @returns true if username exists, false otherwise
+   */
   private isUsernameExists(username: string): boolean {
     return this.usernames.includes(username);
   }
