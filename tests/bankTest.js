@@ -51,6 +51,7 @@ function testDeposit() {
     if (account1.balance != 6000) {
         console.log("Deposit Scenario 1 failed");
     }
+    console.log("Deposit Scenario 1 passed");
     // Scenario 2: Invalid deposit amount
     try {
         bank.deposit(1234567890, -100);
@@ -69,8 +70,35 @@ function testDeposit() {
     }
     console.log("All tests passed for deposit");
 }
+function testWithdraw() {
+    // Scenario 1: Successful money withdraw
+    console.log("prev balance: ", account2.balance);
+    bank.withdraw(1234567891, 1000);
+    if (account2.balance != 9000) {
+        console.log("Withdraw Scenario 1 failed, account1 balance: ", account2.balance);
+    }
+    console.log("Withdraw Scenario 1 passed");
+    // Scenario 2: Withdraw money more than account balance
+    try {
+        bank.withdraw(1234567890, 8000);
+        console.log("Withdraw Scenario 2 failed");
+    }
+    catch (e) {
+        console.log("Withdraw Scenario 2 passed");
+    }
+    // Scenario 3: Withdraw money from invalid accounts
+    try {
+        bank.withdraw(1234567892, 6000);
+        console.log("Withdraw Scenario 3 failed");
+    }
+    catch (e) {
+        console.log("Withdraw Scenario 3 passed");
+    }
+    console.log("All tests passed for withdraw");
+}
 testAccountCreation();
 testDeposit();
+testWithdraw();
 // // test for deposit
 // function testDeposit() {
 //   const bank = new Bank();

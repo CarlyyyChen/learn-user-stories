@@ -91,6 +91,24 @@ export class Bank implements BankType {
     const account = this.findAccountById(accountNumber);
     account.balance += amount;
   }
+
+  /**
+   * withdraw money from a bank account
+   * @param accountNumber - account id
+   * @param amount - amount of money to withdraw, must not exceed account balance
+   * @throws Error if withdraw amount is more than account balance
+   * @throws Error if account number does not exist
+   */
+  public withdraw(accountNumber: number, amount: number): void {
+    if (!this.findAccountById(accountNumber)) {
+      throw new Error("Account does not exist");
+    }
+    const account = this.findAccountById(accountNumber);
+    if (amount > account.balance) {
+      throw new Error("Cannot withdraw more than balance");
+    }
+    account.balance -= amount;
+  }
 }
 
 // export class Bank {

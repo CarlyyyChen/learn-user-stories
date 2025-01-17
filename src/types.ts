@@ -13,4 +13,5 @@ export interface BankType {
   ): AccountType;
 
   deposit(accountNumber: number, amount: number): void;
+  withdraw(accountNumber: number, amount: number): void;
 }
