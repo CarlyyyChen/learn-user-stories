@@ -67,11 +67,29 @@ export class Bank implements BankType {
       throw new Error("Account arealdy exists");
     }
     if (age < 18) {
-      throw new Error("Too yound to create an account");
+      throw new Error("User is under 18");
     }
     const account: AccountType = { id: accountNumber, balance: 0 };
     this.accounts.push(account);
     return account;
+  }
+
+  /**
+   * deposit money into account
+   * @param accountNumber - account id
+   * @param amount - the amount to be deposit into the account, cannot be negative
+   * @throws Error if the account number is invalid.
+   * @throws Error if the amount is negative.
+   */
+  public deposit(accountNumber: number, amount: number) {
+    if (!this.findAccountById(accountNumber)) {
+      throw new Error("Account does not exist");
+    }
+    if (amount < 0) {
+      throw new Error("Cannot deposit negative amount");
+    }
+    const account = this.findAccountById(accountNumber);
+    account.balance += amount;
   }
 }
 

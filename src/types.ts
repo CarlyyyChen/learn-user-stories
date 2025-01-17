@@ -11,4 +11,6 @@ export interface BankType {
     age: number,
     accountNumber: number
   ): AccountType;
+
+  deposit(accountNumber: number, amount: number): void;
 }

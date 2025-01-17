@@ -1,17 +1,16 @@
 // import { strict as assert } from "assert";
 import { Bank } from "../src/bank";
 
-const accounts = [
-  { id: 1234567890, balance: 5000 },
-  { id: 1234567891, balance: 10000 },
-];
+const account1 = { id: 1234567890, balance: 5000 };
+const account2 = { id: 1234567891, balance: 10000 };
+
+const accounts = [account1, account2];
 
 const usernames = ["user1", "user2"];
 
 const bank = new Bank(accounts, usernames);
 
 // Tests for account creation
-
 function testAccountCreation() {
   //Scenario 1: successful account created
   const acc = bank.createAccount("user1", 20, 1234567892);
@@ -52,7 +51,35 @@ function testAccountCreation() {
   console.log("All tests passed for account creation");
 }
 
+// Test for deposit
+function testDeposit() {
+  // Scenario 1: successful deposit
+  bank.deposit(1234567890, 1000);
+  if (account1.balance != 6000) {
+    console.log("Deposit Scenario 1 failed");
+  }
+
+  // Scenario 2: Invalid deposit amount
+  try {
+    bank.deposit(1234567890, -100);
+    console.log("Deposit Scenario 2 failed");
+  } catch (e) {
+    console.log("Deposit Scenario 2 passed");
+  }
+
+  // Scenario 3: account number does not exist
+  try {
+    bank.deposit(1234567894, 100);
+    console.log("Deposit Scenario 3 failed");
+  } catch (e) {
+    console.log("Deposit Scenario 3 passed");
+  }
+
+  console.log("All tests passed for deposit");
+}
+
 testAccountCreation();
+testDeposit();
 
 // // test for deposit
 // function testDeposit() {

@@ -1,5 +1,4 @@
 "use strict";
-// import { BankAccount } from "./types";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bank = void 0;
 /**
@@ -34,6 +33,11 @@ var Bank = /** @class */ (function () {
     Bank.prototype.isAccountNumberInvalid = function (accountNumber) {
         return accountNumber.toString().length !== 10;
     };
+    /**
+     * check if username exists
+     * @param username - username
+     * @returns true if username exists, false otherwise
+     */
     Bank.prototype.isUsernameExists = function (username) {
         return this.usernames.includes(username);
     };
@@ -55,53 +59,33 @@ var Bank = /** @class */ (function () {
             throw new Error("Account arealdy exists");
         }
         if (age < 18) {
-            throw new Error("Too yound to create an account");
+            throw new Error("User is under 18");
         }
         var account = { id: accountNumber, balance: 0 };
         this.accounts.push(account);
         return account;
     };
+    /**
+     * deposit money into account
+     * @param accountNumber - account id
+     * @param amount - the amount to be deposit into the account, cannot be negative
+     * @throws Error if the account number is invalid.
+     * @throws Error if the amount is negative.
+     */
+    Bank.prototype.deposit = function (accountNumber, amount) {
+        if (!this.findAccountById(accountNumber)) {
+            throw new Error("Account does not exist");
+        }
+        if (amount < 0) {
+            throw new Error("Cannot deposit negative amount");
+        }
+        var account = this.findAccountById(accountNumber);
+        account.balance += amount;
+    };
     return Bank;
 }());
 exports.Bank = Bank;
 // export class Bank {
-//   //existing accounts
-//   private accounts: Map<number, BankAccount> = new Map<number, BankAccount>();
-//   private currentAccountNumber: number = 1000; // Starting account number
-//   // Method to check if a userId exists
-//   isUserIdExists(userId: number): boolean {
-//     for (const account of Array.from(this.accounts.values())) {
-//       if (account.userId === userId) {
-//         return true; // Found the userId
-//       }
-//     }
-//     return false; // userId does not exist
-//   }
-//   // Method to generate the next account number
-//   private generateAccountNumber(): number {
-//     return this.currentAccountNumber++;
-//   }
-//   /**
-//    * Creates a new bank account for a user.
-//    * @param userId - The unique identifier for the user. Must not already exist.
-//    * @param name - The account holder's name (can have duplicates).
-//    * @returns A `BankAccount` object with a unique account number, user ID, name, and a balance of 0.
-//    * @throws Error if an account with the given `userId` already exists.
-//    */
-//   createAccount(userId: number, name: string): BankAccount {
-//     if (this.isUserIdExists(userId)) {
-//       throw new Error("Account already exists");
-//     }
-//     const accountNumber = this.generateAccountNumber();
-//     const account: BankAccount = {
-//       accountNumber,
-//       name,
-//       userId,
-//       balance: 0,
-//     };
-//     this.accounts.set(accountNumber, account);
-//     return account;
-//   }
 //   /**
 //    * Deposits a specified amount into a user's bank account.
 //    *

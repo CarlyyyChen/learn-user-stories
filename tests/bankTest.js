@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import { strict as assert } from "assert";
 var bank_1 = require("../src/bank");
-var accounts = [
-    { id: 1234567890, balance: 5000 },
-    { id: 1234567891, balance: 10000 },
-];
+var account1 = { id: 1234567890, balance: 5000 };
+var account2 = { id: 1234567891, balance: 10000 };
+var accounts = [account1, account2];
 var usernames = ["user1", "user2"];
 var bank = new bank_1.Bank(accounts, usernames);
 // Tests for account creation
@@ -45,34 +44,33 @@ function testAccountCreation() {
     }
     console.log("All tests passed for account creation");
 }
+// Test for deposit
+function testDeposit() {
+    // Scenario 1: successful deposit
+    bank.deposit(1234567890, 1000);
+    if (account1.balance != 6000) {
+        console.log("Deposit Scenario 1 failed");
+    }
+    // Scenario 2: Invalid deposit amount
+    try {
+        bank.deposit(1234567890, -100);
+        console.log("Deposit Scenario 2 failed");
+    }
+    catch (e) {
+        console.log("Deposit Scenario 2 passed");
+    }
+    // Scenario 3: account number does not exist
+    try {
+        bank.deposit(1234567894, 100);
+        console.log("Deposit Scenario 3 failed");
+    }
+    catch (e) {
+        console.log("Deposit Scenario 3 passed");
+    }
+    console.log("All tests passed for deposit");
+}
 testAccountCreation();
-// //test for account creation
-// function testAccountCreation() {
-//   const bank = new Bank();
-//   const userId = 101;
-//   const name = "Alice";
-//   const account = bank.createAccount(userId, name);
-//   // Assertions
-//   assert(account, "Account should be created and not null");
-//   assert.equal(account.userId, userId, "User ID should match the input");
-//   assert.equal(account.name, name, "Name should match the input");
-//   assert(
-//     account.accountNumber > 0,
-//     "Account number should be a positive integer"
-//   );
-//   assert.equal(account.balance, 0, "Initial balance should be 0");
-//   try {
-//     bank.createAccount(userId, name);
-//     throw new Error("Duplicate account creation should have thrown an error");
-//   } catch (error) {
-//     assert.equal(
-//       error.message,
-//       "Account already exists",
-//       "Error message should indicate duplicate account creation"
-//     );
-//   }
-//   console.log("Successfully passed account creation test");
-// }
+testDeposit();
 // // test for deposit
 // function testDeposit() {
 //   const bank = new Bank();
